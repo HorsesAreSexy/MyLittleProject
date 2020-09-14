@@ -1,0 +1,154 @@
+position(val)
+	position val
+	for v,k in arguments
+		k=clone(k)
+		k+=1
+		if k isnt 0 and k%2 is 0
+			{v} arguments[k]
+trim(prop=margin,ori=hory)
+	&:first-of-type
+		{prop}-{ori==hory?left:top} 0
+	&:last-of-type
+		{prop}-{ori==hory?right:bottom} 0
+fit(side,amount,offset=0px)
+	margin-{side} amount*-1
+	padding-{side} amount+offset
+font-size(val,weight=null)
+	font-size val
+	font-weight weight if weight
+place(val,sec=null,pos=absolute)
+	if val==none
+		transform none
+	else
+		if sec in (relative fixed)
+			pos=sec
+			sec=null
+		vars={
+			center:(-50% -50%)
+			midst:(-50% 0%)
+			middle:(0% -50%)
+			bottom:(0% -100%)
+			top:(0% 100%)
+		}
+		trans=0% 0%
+		doit=false
+		for val in (val sec)
+			if val in vars
+				doit=true
+				arr=vars[val]
+				if val==center
+					top 50%
+					left 50%
+				else if val==midst
+					left 50%
+				else if val==middle
+					top 50%
+				else if val==bottom
+					top 100%
+				else if val==top
+					bottom 100%
+				trans[0]=trans[0]+arr[0]
+				trans[1]=trans[1]+arr[1]
+		if doit
+			position pos
+			transform translate(trans[0],trans[1])
+font-stroke(color,blur=1,shadow=null,shcol=null)
+	res=''
+	if(!blur||unit(blur,'')==1)
+		for v,k in ((1px 1px) (-1px 1px) (1px -1px) (-1px -1px))
+			res+=v
+			res+=' '+color
+			res+=',' if k<3
+	else
+		for i in 0..20
+			res+=',' if res
+			res+='0 0 '+blur+' '+color
+	res+=',0 0 '+shadow+' '+(shcol||color) for k in 1..5 if shadow
+	text-shadow unquote(res)
+-box-shadow()
+	oa=arguments
+	res=()
+	if length(oa)==2
+		ins=oa[1][length(oa[1])-1]==inset?pop(oa[1]):null
+		for v in oa[0]
+			a=clone(oa[1])
+			wdt=a[2]+a[3]
+			a[1]=wdt*-1 if v==(ins?bottom:top)
+			a[1]=wdt if v==(ins?top:bottom)
+			a[0]=wdt if v==(ins?left:right)
+			a[0]=wdt*-1 if v==(ins?right:left)
+			a[3]=a[2]*-1
+			push(a,ins) if ins
+			push(res,s(join(' ',a)))
+		res=s(join(',',res))
+	else
+		res=s(join(' ',oa))
+	box-shadow res
+butgrad(color)
+	background linear-gradient(to top, color, lighten(color,15%))
+line(color=false,lh=2px,z=before)
+	position relative
+	&:{z}
+		height lh
+		background color||lighten(@color,50%)
+		content ''
+		place middle
+		width 100%
+		left 0
+-skew(degx,degy=0)
+	transform skew(degx,degy)
+	degx*=-1
+	degy*=-1
+	>*
+		transform skew(degx,degy)
+press()
+	&:before
+	&:after
+		content ''
+		display table-cell
+		width 50%
+trans()
+	transition-duration typeof(arguments[0])=='unit'?shift(arguments):0.4s
+	transition-property s(join(', ',arguments)) if length(arguments)
+		
+wrap=
+	width 100%
+	height 100%
+spacew=0.27777em
+space=
+	margin-right 0.27777em
+oneline=
+	overflow hidden
+	white-space nowrap
+	text-overflow ellipsis
+
+	
+media={
+	wide:1690px,
+	medium:1280px,
+	small:980px,
+	tablet:736px,
+	mobile:480px
+}
+for k,v in media
+	media[k]='screen and (max-width: %s)' % v
+color={
+	main:#373737
+	contr:white
+	major:#555555
+	sub:dimgray
+	minor:gray
+	muff:silver
+	nvm:lightgray
+	invis:rgb(233,233,233)
+	bg:white
+	brd:darkgray
+	red:#d62828
+}
+shcol=rgba(0,0,0,0.8)
+shadow={
+	color:shcol
+	small:0 0 2px 0 shcol
+	medium:0 0 4px 1px shcol
+	large:0 0 10px 2px shcol
+}

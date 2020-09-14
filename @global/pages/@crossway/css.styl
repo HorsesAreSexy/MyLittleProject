@@ -1,0 +1,67 @@
+padding 30px
+ih=400px
+.item
+	width 280px
+	height:ih
+	float left
+	margin 30px
+	position relative
+	&.note
+		font-size 60px bold
+		color: color.sub
+		.adv
+			font-size 12px
+			position absolute
+			bottom 0
+			left 0
+	&:not(.note)
+		cursor pointer
+	.cover
+		position absolute top 0 left 0
+		width 100%
+		height:ih
+		border: 2px solid color.major
+		border-radius 4px
+		background-color white
+		trans(height)
+		nh=35px
+		.name
+			position absolute top -2px left -2px
+			width 70%
+			height:nh
+			font-size 25px bold
+			color: color.major
+			overflow hidden
+			.cont
+				position absolute top 0 right 2px
+				{wrap}
+				border 0 solid white
+				border-width 2px 0 0 4px
+				border-radius 4px
+				font-stroke white 50px
+				-box-shadow left top, 0 0 10px 0 white inset
+			&:before
+				content ''
+				display block
+				position absolute top 0 right 16px
+				border-right: 2px solid color.major
+				transform skewX(-45deg)
+				{wrap}
+				background rgba(255,255,255,.8)
+			&:after
+				content ''
+				display block
+				position absolute bottom 0 right 34px
+				width 100%
+				border-bottom: 2px solid color.major
+	.desc
+		position absolute bottom 0 left 0
+		width 100%
+		padding 20px 0
+		font-size 18px
+		color:color.major
+		&:after
+			content ''
+			position absolute bottom 0 left 10%
+			width 80%
+			border-bottom: 1px solid color.minor
